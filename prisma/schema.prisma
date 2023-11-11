@@ -11,8 +11,18 @@ datasource db {
 }
 
 model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  hash    String
+  salt    String
+  Account Account?
+}
+
+model Account {
   id Int @id @default(autoincrement())
-  email String @unique
-  hash String
-  salt String
+
+  ownerId Int  @unique
+  owner   User @relation(fields: [ownerId], references: [id])
+
+  isBlockingEnabled Boolean
 }
